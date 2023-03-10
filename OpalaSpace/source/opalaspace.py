@@ -12,11 +12,19 @@ except:
 largura = 1280
 altura = 720
 
+#sons do jogo
+pygame.mixer.music.set_volume(0.5)
+musica_fundo = pygame.mixer.music.load('sons/Star Wars - The Imperial March.mp3')
+pygame.mixer.music.play(-1)
+
+barulho_colisao = pygame.mixer.Sound('sons/smw_thunder.wav')
+barulho_colisao.set_volume(1.5)
+
 #configura a janela e o texto do jogo
 screen = pygame.display.set_mode((largura,altura))
 pygame.display.set_caption('Jogo Opala Space - IFPI campus Pedro II')
 
-img_fundo = pygame.image.load('figs/fundo.jpg').convert_alpha()
+img_fundo = pygame.image.load('figs/fundo5.jpg').convert_alpha()
 img_fundo = pygame.transform.scale(img_fundo, (largura,altura))
 
 img_alien = pygame.image.load('figs/alien.png').convert_alpha()
@@ -25,7 +33,7 @@ img_alien = pygame.transform.scale(img_alien, (50,50))
 img_aviao = pygame.image.load('figs/aviao.png').convert_alpha()
 img_aviao = pygame.transform.scale(img_aviao, (50,50))
 img_aviao = pygame.transform.rotate(img_aviao, -90)
-
+   
 img_missil = pygame.image.load('figs/missil.png')
 img_missil = pygame.transform.scale(img_missil,(25,25))
 img_missil = pygame.transform.rotate(img_missil, -45)
@@ -70,6 +78,7 @@ def colisoes():
         return True
     elif missil_rect.colliderect(alien_rect):
         pontos = pontos + 1
+        barulho_colisao.play()
         return True
     else:
         return False
@@ -132,9 +141,9 @@ while executar == True:
     alien_rect.x = x_alien
 
     #desenha os objetos na tela para colisões
-    pygame.draw.rect(screen, (255,255,255), aviao_rect, 4)
-    pygame.draw.rect(screen, (255,255,255), missil_rect, 4)
-    pygame.draw.rect(screen, (255,255,255), alien_rect, 4)
+    pygame.draw.rect(screen, (255,255,255), aviao_rect, -1)
+    pygame.draw.rect(screen, (255,255,255), missil_rect, -1)
+    pygame.draw.rect(screen, (255,255,255), alien_rect, -1)
 
     #exibir os pontos na tela
     score = pontuacao.render(f'Pontos: {int(pontos)}', True, (255,255,255))
@@ -147,4 +156,3 @@ while executar == True:
     screen.blit(img_aviao, (x_aviao, y_aviao))
     
     pygame.display.update()
-
